@@ -4,7 +4,7 @@ Lucas Spartacus Vieira Carvalho
 Shaw and Partners
 Implementation of the front-end using React
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CSVUpload from './components/CSVUpload';
 import SearchBar from './components/SearchBar';
 import Card from './components/Card';
@@ -28,12 +28,23 @@ const App = () => {
     )
   );
 
+  const [matches, setMatches] = useState(
+    window.matchMedia("(min-width: 768px)").matches
+  )
+  
+  useEffect(() => {
+    window
+    .matchMedia("(min-width: 768px)")
+    .addEventListener('change', e => setMatches( e.matches ));
+  }, []);
+
   return (
     <div className="App">
 
       <nav className='nav'>
-   
-        <SearchBar onSearch={handleSearch} /> 
+      {matches && (<SearchBar onSearch={handleSearch} />)}
+      {!matches && (<div className='smallscree'> <SearchBar onSearch={handleSearch} /> </div>)}
+       
         <CSVUpload onDataLoad={handleDataLoad} />
 
       </nav>
